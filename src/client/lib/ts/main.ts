@@ -1,7 +1,32 @@
 import * as THREE from "three";
 import WebGL from "three/addons/capabilities/WebGL.js";
 
+const id = window.location.pathname.split('/').pop();
+
+let shaderInfo;
+try {
+    const response = await fetch('/shader/' + id);
+    if (!response.ok) {
+        throw new Error(`Status: ${response.status}`);
+    }
+    const json = await response.json();
+    shaderInfo = json.shaderInfo;
+} catch (error) {
+    throw new Error('Could not get shader. Please refresh the page.')
+}
+
+const geometry = new THREE.BoxGeometry(1, 1, 1);
+
+const material = new THREE.MeshBasicMaterial();
+
+if (shaderInfo.color !== undefined) {
+    material.color = new THREE.Color(shaderInfo.color);
+}
+
+const cube = new THREE.Mesh(geometry, material);
+
 const scene = new THREE.Scene();
+scene.add(cube);
 
 const camera = new THREE.PerspectiveCamera(
     75,
@@ -15,13 +40,7 @@ renderer.setSize(window.innerWidth, window.innerHeight);
 
 document.body.appendChild(renderer.domElement);
 
-const geometry = new THREE.BoxGeometry(1, 1, 1);
-const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
-
-const cube = new THREE.Mesh(geometry, material);
-scene.add(cube);
-
-camera.position.z = 5;
+camera.position.z = 3;
 
 if (WebGL.isWebGL2Available()) {
     renderer.setAnimationLoop(animate);

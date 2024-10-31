@@ -1,0 +1,5 @@
+html
+    body
+        each shader in shaders
+            p
+                a(href="/shaderviewer/" + shader.id) #{shader.name}
