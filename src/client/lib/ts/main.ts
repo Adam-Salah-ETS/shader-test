@@ -15,8 +15,12 @@ try {
     throw new Error('Could not get shader. Please refresh the page.')
 }
 
-let vertexShader = await(await fetch(`/data/shaders/${shaderInfo.src}/vertex.glsl`)).text();
-let fragmentShader = await(await fetch(`/data/shaders/${shaderInfo.src}/fragment.glsl`)).text();
+if (shaderInfo === undefined) {
+    window.location.href = '/'
+}
+
+let vertexShader = await(await fetch(`/data/shaders/${shaderInfo.src}/shader.vert`)).text();
+let fragmentShader = await(await fetch(`/data/shaders/${shaderInfo.src}/shader.frag`)).text();
 
 const geometry = new THREE.IcosahedronGeometry(1, 5);
 

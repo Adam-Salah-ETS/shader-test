@@ -11,18 +11,19 @@ router.get("/", async (req, res, next) => {
     await shaderRouter.shaderController.loadShadersInfo();
     const shadersInfo = shaderRouter.shaderController.shadersInfo;
     res.render("index", {
-        shadersInfo: shadersInfo
+        shadersInfo: shadersInfo,
     });
 });
 
 router.get("/shaderviewer/:id", async (req, res, next) => {
-    res.render("shaderviewer.pug", {
-    });
+    res.render("shaderviewer.pug");
 });
 
-app.use('/', router);
-app.use('/shader', shaderRouter.router);
+app.use("/", router);
+app.use("/shader", shaderRouter.router);
 
-app.use('/data', express.static(__dirname + '/data'));
+app.use("/data", express.static(__dirname + "/data"));
 
-const server = ViteExpress.listen(app, 3000, () => console.log("Server is listening on port 3000... http://localhost:3000/"));
+const server = ViteExpress.listen(app, 3000, () =>
+    console.log("Server is listening on port 3000... http://localhost:3000/")
+);
