@@ -1,6 +1,8 @@
 import { Request, Response, Router } from "express";
 import { ShaderController } from "../core/controllers/shaderController";
 
+require('dotenv').config()
+
 export class ShaderRouter {
     private _router: Router;
     private _shaderController: ShaderController;
@@ -13,10 +15,6 @@ export class ShaderRouter {
         this._router = Router();
         this._shaderController = new ShaderController();
         this.init();
-    }
-
-    public async getAllShaders(req: Request, res: Response) {
-        
     }
 
     public async getShader(req: Request, res: Response) {
@@ -47,7 +45,6 @@ export class ShaderRouter {
     }
 
     private init() {
-        this._router.get('/all', this.getAllShaders.bind(this));
         this._router.get('/:id', this.getShader.bind(this));
     }
 }

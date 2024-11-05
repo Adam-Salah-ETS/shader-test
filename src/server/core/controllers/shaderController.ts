@@ -1,28 +1,35 @@
-import { Shader } from "../shaders/shader";
-import { SimpleColorShader } from "../shaders/simpleColorShader";
-
 export class ShaderController {
 
-    private _shaders: Shader[];
+    private _shadersInfo: {id: string, name: string, src: string}[];
 
     public constructor() {
-        this._shaders = [];
+        this._shadersInfo = [];
         this.init();
     }
 
     private init() {
-        const shader1 = new SimpleColorShader('Simple Red Shader', 0xff0000);
-        const shader2 = new SimpleColorShader('Simple Green Shader', 0x00ff00);
-        const shader3 = new SimpleColorShader('Simple Blue Shader', 0x0000ff);
-    
-        this._shaders.push(shader1, shader2, shader3);
+
     }
 
-    public getShaderInfo(id: string): {} {
-        return this._shaders.filter((shader) => shader.id === id)[0].getInfo();
+    public getShaderInfo(id: string): {id: string, name: string, src: string} {
+        const shaderInfo = this._shadersInfo.filter((shaderInfo) => shaderInfo.id === id);
+        if (shaderInfo.length > 1) {
+            throw new Error("Duplicate shaders");
+        }
+        return shaderInfo[0];
     }
 
-    public get shaders(): Shader[] {
-        return this._shaders;
+    public get shadersInfo(): {id: string, name: string, src: string}[] {
+        return this._shadersInfo;
+    }
+
+    public async loadShadersInfo() {
+        this._shadersInfo = [];
+        const res = await fetch(process.env.HOST_URL + '/data/shaders/shaders.json');
+        const json = await res.json();
+        const shadersInfo = json["shaders"];
+        shadersInfo.forEach((shaderInfo: { id: string; name: string; src: string; }) => {
+            this._shadersInfo.push(shaderInfo);
+        });
     }
 }

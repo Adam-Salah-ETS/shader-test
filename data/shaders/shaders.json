@@ -1,0 +1,9 @@
+{
+    "shaders": [
+        {
+            "id": "0",
+            "name": "test-shader",
+            "src": "test-shader"
+        }
+    ]
+}

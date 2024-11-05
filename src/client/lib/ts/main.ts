@@ -15,13 +15,19 @@ try {
     throw new Error('Could not get shader. Please refresh the page.')
 }
 
-const geometry = new THREE.BoxGeometry(1, 1, 1);
+let vertexShader = await(await fetch(`/data/shaders/${shaderInfo.src}/vertex.glsl`)).text();
+let fragmentShader = await(await fetch(`/data/shaders/${shaderInfo.src}/fragment.glsl`)).text();
 
-const material = new THREE.MeshBasicMaterial();
+const geometry = new THREE.IcosahedronGeometry(1, 5);
 
-if (shaderInfo.color !== undefined) {
-    material.color = new THREE.Color(shaderInfo.color);
-}
+const material = new THREE.ShaderMaterial({
+    vertexShader: vertexShader,
+    fragmentShader: fragmentShader
+});
+
+// if (shaderInfo.color !== undefined) {
+//     material.color = new THREE.Color(shaderInfo.color);
+// }
 
 const cube = new THREE.Mesh(geometry, material);
 

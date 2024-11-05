@@ -1,5 +1,5 @@
 html
     body
-        each shader in shaders
-            p
-                a(href="/shaderviewer/" + shader.id) #{shader.name}
+        each shaderInfo in shadersInfo
+            h1
+                a(href="/shaderviewer/" + shaderInfo.id) #{shaderInfo.name}
